@@ -62,15 +62,15 @@ public class Algorithms {
         var n = function.getVariablesCount();
         int size, position, sum, diff;
 
-        var result = new int[n];
-        for (int i = 0; i < (1 << (n - 1)); i++) {
+        var result = new int[1 << n];
+        for (int i = 0; i < (1 << n); i++) {
             result[i] = function.getBit(i) ? -1 : 1;
         }
 
         for (int i = 0; i < n; i++) {
             size = 1 << i;
             position = 0;
-            while (position < (1 << (n - 1))) {
+            while (position < (1 << n)) {
                 for (int j = 0; j < size; j++) {
                     sum = result[position + j] + result[position + size + j];
                     diff = result[position + j] - result[position + size + j];
@@ -118,7 +118,7 @@ public class Algorithms {
         var n = function.getVariablesCount();
         int size, position, sum, diff;
 
-        var result = new int[n];
+        var result = new int[1 << (n - 1)];
         for (int i = 0; i < (1 << (n - 1)); i++) {
             result[i] = function.getBit(i) ? -1 : 1;
         }
@@ -191,10 +191,10 @@ public class Algorithms {
      * */
     public static double correlation(BooleanFunction f, BooleanFunction g) {
         if(f.getVariablesCount() != g.getVariablesCount()) {
-            throw new RuntimeException("Разное количество аргументов!");
+            throw new IllegalArgumentException("Разное количество аргументов!");
         }
 
-        int size = f.getVariablesCount(), sum = 0;
+        int size = 1 << f.getVariablesCount(), sum = 0;
         for (int x = 0; x < size; x++) {
             sum += (f.getBit(x) == g.getBit(x)) ? 1 : -1;
         }

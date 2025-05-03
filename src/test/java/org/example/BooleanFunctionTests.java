@@ -53,8 +53,8 @@ class BooleanFunctionTests {
         var dnf = Converter.valueVectorToDNF(function);
 
         assertEquals(2, dnf.size());
-        assertTrue(dnf.contains(List.of(0, 1)));
-        assertTrue(dnf.contains(List.of(1)));
+        assertTrue(dnf.contains(List.of(-1, -2)));
+        assertTrue(dnf.contains(List.of(1, -2)));
     }
 
     @Test
@@ -65,10 +65,10 @@ class BooleanFunctionTests {
         var transformed = Algorithms.moebiusTransform(function);
 
         assertNotNull(transformed);
-        assertTrue(transformed.get(0));
-        assertFalse(transformed.get(1));
-        assertTrue(transformed.get(2));
-        assertFalse(transformed.get(3));
+        assertFalse(transformed.get(0));
+        assertTrue(transformed.get(1));
+        assertFalse(transformed.get(2));
+        assertTrue(transformed.get(3));
     }
 
     @Test
@@ -79,7 +79,7 @@ class BooleanFunctionTests {
         var walshSpectrum = Algorithms.walshTransform(function);
 
         assertEquals(4, walshSpectrum.length);
-        assertArrayEquals(new int[]{0, -2, 0, 2}, walshSpectrum);
+        assertArrayEquals(new int[]{0, 4, 0, 0}, walshSpectrum);
     }
 
     @Test
@@ -90,7 +90,7 @@ class BooleanFunctionTests {
         var anf = Converter.valueVectorToANF(function);
         var degree = Algorithms.algebraicDegree(anf);
 
-        assertEquals(2, degree);
+        assertEquals(1, degree);
     }
 
     @Test
@@ -122,19 +122,19 @@ class BooleanFunctionTests {
         var walshSpectrum = Algorithms.walshTransform(function);
         var nonlinearity = Algorithms.nonlinearity(walshSpectrum);
 
-        assertEquals(1, nonlinearity);
+        assertEquals(0, nonlinearity);
     }
 
     @Test
     void testCorrelation() {
-        var bits1 = BitSet.valueOf(new long[]{0b1010});
+        var bits1 = BitSet.valueOf(new long[]{0b1110});
         var bits2 = BitSet.valueOf(new long[]{0b1100});
         var function1 = new BooleanFunction(bits1, 2);
         var function2 = new BooleanFunction(bits2, 2);
 
         var correlation = Algorithms.correlation(function1, function2);
 
-        assertEquals(-0.5, correlation);
+        assertEquals(0.5, correlation);
     }
 
     @Test
@@ -144,7 +144,7 @@ class BooleanFunctionTests {
 
         var spectrum = Algorithms.autocorrelationSpectrum(function);
 
-        assertArrayEquals(new int[]{4, 0, 0, -4}, spectrum);
+        assertArrayEquals(new int[]{4, -4, 4, -4}, spectrum);
     }
 
     @Test
@@ -167,7 +167,7 @@ class BooleanFunctionTests {
         var cnf = Converter.valueVectorToCNF(function);
 
         assertEquals(2, cnf.size());
-        assertTrue(cnf.contains(List.of(0)));
-        assertTrue(cnf.contains(List.of(0, 1)));
+        assertTrue(cnf.contains(List.of(-1, -2)));
+        assertTrue(cnf.contains(List.of(1, -2)));
     }
 }

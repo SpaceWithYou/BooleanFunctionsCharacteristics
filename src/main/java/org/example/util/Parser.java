@@ -18,7 +18,7 @@ public class Parser {
     private static final String LINE_PATTERN = "^[01]+$";
 
     /**
-     * Читает строку, котораря задаёт булеву функцию в виде вектора.
+     * Читает строку, которая задаёт булеву функцию в виде вектора.
      * @return Bitset, представляющий булеву функцию
      * @throws IOException если произошло исключение IO
      * @throws IllegalArgumentException если строка не представляет булеву функцию
@@ -27,11 +27,17 @@ public class Parser {
         var line = reader.readLine();
 
         int number = returnVariableNumber(line);
-        if(!Pattern.matches(LINE_PATTERN, line) && number == -1) {
+        if(!Pattern.matches(LINE_PATTERN, line) || number == -1) {
             throw new IllegalArgumentException("Wrong line!");
         }
 
-        return new BooleanFunction(BitSet.valueOf(line.getBytes()), number);
+        var result = new BitSet(line.length());
+        for (int i = 0; i < line.length(); i++) {
+            if (line.charAt(i) == '1') {
+                result.set(i);
+            }
+        }
+        return new BooleanFunction(result, number);
     }
 
     /**
@@ -53,6 +59,6 @@ public class Parser {
             lineLength /= 2;
             numberOfVariables++;
         }
-        return numberOfVariables;
+        return --numberOfVariables;
     }
 }
