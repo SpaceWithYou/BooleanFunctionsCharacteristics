@@ -80,31 +80,13 @@ public class Converter {
      * это список номеров переменных в одном из дизъюнктов
      * */
     public static List<List<Integer>> valueVectorToANF(BooleanFunction function) {
-//        var moebiusTransform = Algorithms.moebiusTransform(function);
-//        var variablesCount = function.getVariablesCount();
-//
-//        var result = new ArrayList<List<Integer>>();
-//        for (int i = 0; i < moebiusTransform.length(); i++) {
-//            if (moebiusTransform.get(i)) {
-//                var variables = new ArrayList<Integer>();
-//                for (int j = 0; j < variablesCount; j++) {
-//                    if ((i & (1 << j)) != 0) {
-//                        variables.add(j + 1);
-//                    }
-//                }
-//                result.add(variables);
-//            }
-//        }
-
-        // Преобразуем в BitSet коэффициентов (сдвинутый на +1)
         var coeffs = Algorithms.moebiusTransform(function);
         int n = function.getVariablesCount();
 
         List<List<Integer>> result = new ArrayList<>();
-        // пробегаем по всем «1»-битам в BitSet
         for (int bit = coeffs.nextSetBit(0); bit >= 0; bit = coeffs.nextSetBit(bit + 1)) {
             int idx = bit - 1;
-            // idx == -1  → пустой список  → константа 1
+            // idx == -1  -> пустой список -> константа 1
             if (idx < 0) {
                 result.add(Collections.emptyList());
             } else {
